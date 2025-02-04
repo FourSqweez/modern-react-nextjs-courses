@@ -4,6 +4,7 @@ export default function CountButtons({ setCount, type }) {
   const handleClick = () => {
     setCount((prev) => {
       if (type === "minus") {
+        if (prev === 0) return 0
         return prev - 1
       } else {
         return prev + 1
