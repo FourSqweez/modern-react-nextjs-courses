@@ -1,1 +1,1 @@
-# modern-react-nextjs-couses
+# modern-react-nextjs-courses
