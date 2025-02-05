@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react"
 import { initialItems } from "../lib/constants"
+import AddItemForm from "./AddItemForm"
 import BackgroundHeading from "./BackgroundHeading"
+import ButtonGroup from "./ButtonGroup"
+import Counter from "./Counter"
 import Footer from "./Footer"
 import Header from "./Header"
 import ItemList from "./ItemList"
+import Logo from "./Logo"
 import Sidebar from "./Sidebar"
 
 function App() {
@@ -71,22 +75,29 @@ function App() {
     <>
       <BackgroundHeading />
       <main>
-        <Header
-          numberOfItemsPacked={items.filter((item) => item.packed).length}
-          totalNumberOfItems={items.length}
-        />
+        <Header>
+          <Logo />
+          <Counter
+            numberOfItemsPacked={items.filter((item) => item.packed).length}
+            totalNumberOfItems={items.length}
+          />
+        </Header>
+
         <ItemList
           items={items}
           handleDeleteItem={handleDeleteItem}
           handleToggleItem={handleToggleItem}
         />
-        <Sidebar
-          handleAddItem={handleAddItem}
-          handleRemoveAllItems={handleRemoveAllItems}
-          handleResetToInitial={handleResetToInitial}
-          handleMarkAllAsComplete={handleMarkAllAsComplete}
-          handleMarkAllAsIncomplete={handleMarkAllAsIncomplete}
-        />
+
+        <Sidebar>
+          <AddItemForm onAddItem={handleAddItem} />
+          <ButtonGroup
+            handleRemoveAllItems={handleRemoveAllItems}
+            handleResetToInitial={handleResetToInitial}
+            handleMarkAllAsComplete={handleMarkAllAsComplete}
+            handleMarkAllAsIncomplete={handleMarkAllAsIncomplete}
+          />
+        </Sidebar>
       </main>
       <Footer />
     </>
