@@ -1,11 +1,8 @@
 import { useState } from "react"
 import Warning from "./Warning"
 
-export default function Textarea() {
-  const [text, setText] = useState("")
+export default function Textarea({ text, setText }) {
   const [warningText, setWarningText] = useState("")
-
-  const numberOfCharacters = text.length
 
   const handleChange = (e) => {
     let newText = e.target.value
