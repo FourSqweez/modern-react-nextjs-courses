@@ -9,20 +9,20 @@ export default function ItemList({
         <Item
           key={item.id}
           item={item}
-          onDelete={handleDeleteItem}
-          onToggle={handleToggleItem}
+          onDeleteItem={handleDeleteItem}
+          onToggleItem={handleToggleItem}
         />
       ))}
     </ul>
   )
 }
 
-function Item({ item, onDelete, onToggle }) {
+function Item({ item, onDeleteItem, onToggleItem }) {
   return (
     <li className="item">
       <label>
         <input
-          onChange={() => onToggle(item.id)}
+          onChange={() => onToggleItem(item.id)}
           checked={item.packed}
           type="checkbox"
         />{" "}
@@ -31,7 +31,7 @@ function Item({ item, onDelete, onToggle }) {
 
       <button
         onClick={() => {
-          onDelete(item.id)
+          onDeleteItem(item.id)
         }}>
         ❌
       </button>
