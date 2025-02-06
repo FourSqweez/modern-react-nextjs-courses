@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { TFeedbackItem } from "../lib/types"
+import HashtagItem from "./hashtag/HashtagItem"
 import HashtagList from "./hashtag/HashtagList"
 import Container from "./layout/Container"
 import Footer from "./layout/Footer"
@@ -98,10 +99,15 @@ function App() {
         handleAddToList={handleAddToList}
       />
 
-      <HashtagList
-        handleSelectCompany={handleSelectCompany}
-        companyList={companyList}
-      />
+      <HashtagList>
+        {companyList.map((company) => (
+          <HashtagItem
+            key={company}
+            onSelectCompany={handleSelectCompany}
+            company={company}
+          />
+        ))}
+      </HashtagList>
     </div>
   )
 }
