@@ -9,7 +9,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
 
-  const handleAddToList = (text: string) => {
+  const handleAddToList = async (text: string) => {
     const companyName = text
       .split(" ")
       .find((word) => word.includes("#"))!
@@ -20,11 +20,25 @@ function App() {
       text,
       upvoteCount: 0,
       daysAgo: 0,
-      companyName,
+      company: companyName,
       badgeLetter: companyName.substring(0, 1).toUpperCase(),
     }
 
+    // Optimistic UI
+    //display the data from state first and then display data from server later
     setFeedbackItems([...feedbackItems, newItem])
+
+    await fetch(
+      "https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks",
+      {
+        method: "POST",
+        body: JSON.stringify(newItem),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    )
   }
   useEffect(() => {
     const fetchFeedbackItems = async () => {
