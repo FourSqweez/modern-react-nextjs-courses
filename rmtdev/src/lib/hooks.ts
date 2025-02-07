@@ -23,7 +23,11 @@ export function useJobItems(searchText: string) {
     fetchData();
   }, [searchText]);
 
-  return [jobItemsSliced, isLoading, totalNumberOfResults] as const;
+  return {
+    jobItems: jobItemsSliced,
+    isLoading,
+    totalNumberOfResults,
+  } as const;
 }
 
 export function useJobItem(id: number | null) {

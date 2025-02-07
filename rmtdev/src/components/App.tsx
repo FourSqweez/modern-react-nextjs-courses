@@ -16,7 +16,7 @@ import SortingControls from './SortingControls';
 
 function App() {
   const [searchText, setSearchText] = useState('');
-  const [jobItems, isLoading, totalNumberOfResults] = useJobItems(searchText);
+  const { jobItems, isLoading, totalNumberOfResults } = useJobItems(searchText);
 
   return (
     <>
