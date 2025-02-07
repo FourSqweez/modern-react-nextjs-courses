@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useActiveId, useJobItems } from '../lib/hooks';
+import { useActiveId, useJobItem, useJobItems } from '../lib/hooks';
 import Background from './Background';
 import BookmarksButton from './BookmarksButton';
 import Container from './Container';
@@ -18,8 +18,7 @@ function App() {
   const [searchText, setSearchText] = useState('');
   const [jobItems, isLoading] = useJobItems(searchText);
   const activeId = useActiveId();
-
-  console.log(activeId);
+  const jobItem = useJobItem(activeId);
 
   return (
     <>
@@ -45,7 +44,7 @@ function App() {
 
           <PaginationControls />
         </Sidebar>
-        <JobItemContent />
+        <JobItemContent jobItem={jobItem} />
       </Container>
 
       <Footer />
