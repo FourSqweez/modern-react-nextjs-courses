@@ -70,7 +70,7 @@ export function useActiveId() {
   return activeId;
 }
 
-export function useDebounce(value, delay) {
+export function useDebounce<T>(value: T, delay = 500): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
