@@ -3,14 +3,16 @@ import { useEffect, useState } from 'react';
 import { BASE_API_URL } from './constants';
 import { type JobItem } from './types';
 
+const fetchJobItem = async (id: number) => {
+  const response = await fetch(`${BASE_API_URL}/${id}`);
+  const data = await response.json();
+  return data;
+};
+
 export function useJobItem(id: number | null) {
   const { data, isLoading } = useQuery(
     ['job-item', id],
-    async () => {
-      const response = await fetch(`${BASE_API_URL}/${id}`);
-      const data = await response.json();
-      return data;
-    },
+    () => (id ? fetchJobItem(id) : null),
     {
       staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
