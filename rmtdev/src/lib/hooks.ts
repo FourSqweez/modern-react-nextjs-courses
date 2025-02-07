@@ -1,6 +1,28 @@
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { BASE_API_URL } from './constants';
-import { type JobItem, type JobItemExpanded } from './types';
+import { type JobItem } from './types';
+
+export function useJobItem(id: number | null) {
+  const { data, isLoading } = useQuery(
+    ['job-item', id],
+    async () => {
+      const response = await fetch(`${BASE_API_URL}/${id}`);
+      const data = await response.json();
+      return data;
+    },
+    {
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: Boolean(id),
+      onError: () => {},
+    }
+  );
+
+  const jobItem = data.jobItem;
+  return { jobItem, isLoading } as const;
+}
 
 export function useJobItems(searchText: string) {
   const [jobItems, setJobItems] = useState<JobItem[]>([]);
@@ -28,27 +50,6 @@ export function useJobItems(searchText: string) {
     isLoading,
     totalNumberOfResults,
   } as const;
-}
-
-export function useJobItem(id: number | null) {
-  const [jobItem, setJobItem] = useState<JobItemExpanded | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchData = async () => {
-      setIsLoading(true);
-      const response = await fetch(`${BASE_API_URL}/${id}`);
-      const data = await response.json();
-      setIsLoading(false);
-      setJobItem(data.jobItem);
-    };
-
-    fetchData();
-  }, [id]);
-
-  return [jobItem, isLoading] as const;
 }
 
 export function useActiveId() {
