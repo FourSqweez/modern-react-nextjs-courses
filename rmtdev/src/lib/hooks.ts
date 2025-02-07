@@ -34,7 +34,6 @@ export function useJobItem(id: number | null) {
       // setIsLoading(true);
       const response = await fetch(`${BASE_API_URL}/${id}`);
       const data = await response.json();
-      console.log('data : ', data);
       // setIsLoading(false);
       setJobItem(data.jobItem);
     };
