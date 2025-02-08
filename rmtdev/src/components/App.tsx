@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { RESULTS_PER_PAGE } from '../lib/constants';
 import { useDebounce, useJobItems } from '../lib/hooks';
-import { SortBy } from '../lib/types';
+import { type PageDirection, type SortBy } from '../lib/types';
 import Background from './Background';
 import BookmarksButton from './BookmarksButton';
 import Container from './Container';
@@ -43,7 +43,7 @@ function App() {
   );
 
   // event handlers / actions
-  const handleChangePage = (direction: 'next' | 'previous') => {
+  const handleChangePage = (direction: PageDirection) => {
     if (direction === 'next') {
       setCurrentPage((prev) => prev + 1);
     } else {
