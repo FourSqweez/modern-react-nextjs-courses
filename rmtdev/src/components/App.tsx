@@ -16,12 +16,24 @@ import Sidebar, { SidebarTop } from './Sidebar';
 import SortingControls from './SortingControls';
 
 function App() {
+  // state
   const [searchText, setSearchText] = useState('');
   const debouncedSearchText = useDebounce(searchText, 400);
   const { jobItems, isLoading } = useJobItems(debouncedSearchText);
+  const [currentPage, setCurrentPage] = useState(1);
 
+  // derived / computed state
   const totalNumberOfResults = jobItems?.length || 0;
   const jobItemsSliced = jobItems?.slice(0, 7) || [];
+
+  // event handlers / actions
+  const handleChangePage = (direction: 'next' | 'previous') => {
+    if (direction === 'next') {
+      setCurrentPage((prev) => prev + 1);
+    } else {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
 
   return (
     <>
@@ -45,7 +57,11 @@ function App() {
 
           <JobList jobItems={jobItemsSliced} isLoading={isLoading} />
 
-          <PaginationControls />
+          <PaginationControls
+            previousPage={currentPage - 1}
+            nextPage={currentPage + 1}
+            onClick={handleChangePage}
+          />
         </Sidebar>
         <JobItemContent />
       </Container>
