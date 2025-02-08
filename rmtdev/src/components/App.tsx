@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { RESULTS_PER_PAGE } from '../lib/constants';
 import { useDebounce, useJobItems } from '../lib/hooks';
 import Background from './Background';
 import BookmarksButton from './BookmarksButton';
@@ -24,9 +25,12 @@ function App() {
 
   // derived / computed state
   const totalNumberOfResults = jobItems?.length || 0;
-  const totalNumberOfPages = totalNumberOfResults / 7;
+  const totalNumberOfPages = totalNumberOfResults / RESULTS_PER_PAGE;
   const jobItemsSliced =
-    jobItems?.slice(currentPage * 7 - 7, currentPage * 7) || [];
+    jobItems?.slice(
+      currentPage * RESULTS_PER_PAGE - RESULTS_PER_PAGE,
+      currentPage * RESULTS_PER_PAGE
+    ) || [];
 
   // event handlers / actions
   const handleChangePage = (direction: 'next' | 'previous') => {
