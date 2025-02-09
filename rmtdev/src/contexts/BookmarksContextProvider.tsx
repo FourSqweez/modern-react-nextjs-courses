@@ -5,7 +5,12 @@ type BookmarksContextProviderProps = {
   children: ReactNode;
 };
 
-export const BookmarksContext = createContext(null);
+type TBookmarksContext = {
+  bookmarkedIds: number[];
+  handleToggleBookmark: (id: number) => void;
+};
+
+export const BookmarksContext = createContext<TBookmarksContext | null>(null);
 
 export default function BookmarksContextProvider({
   children,
