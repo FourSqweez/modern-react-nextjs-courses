@@ -10,7 +10,7 @@ export const BookmarksContext = createContext(null);
 export default function BookmarksContextProvider({
   children,
 }: BookmarksContextProviderProps) {
-  const [bookmarkedIds, setBookmarkedIds] = useLocalStorage(
+  const [bookmarkedIds, setBookmarkedIds] = useLocalStorage<number[]>(
     'bookmarkedIds',
     []
   );
