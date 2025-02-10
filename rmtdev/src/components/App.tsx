@@ -5,7 +5,7 @@ import Container from './Container';
 import Footer from './Footer';
 import Header, { HeaderTop } from './Header';
 import JobItemContent from './JobItemContent';
-import JobList from './JobList';
+import JobListSearchWrapper from './JobListSearchWrapper';
 import Logo from './Logo';
 import PaginationControls from './PaginationControls';
 import ResultsCount from './ResultsCount';
@@ -34,7 +34,7 @@ function App() {
             <SortingControls />
           </SidebarTop>
 
-          <JobList />
+          <JobListSearchWrapper />
 
           <PaginationControls />
         </Sidebar>
