@@ -1,5 +1,5 @@
 import { DUMMY_IMG_URL } from '../lib/constants';
-import { useActiveId, useJobItem } from '../lib/hooks';
+import { useActiveIdContext, useJobItem } from '../lib/hooks';
 import BookmarkIcon from './BookmarkIcon';
 import Spinner from './Spinner';
 
@@ -8,7 +8,7 @@ type JobItemContent = {
 };
 
 export default function JobItemContent() {
-  const activeId = useActiveId();
+  const { activeId } = useActiveIdContext();
   const { jobItem, isLoading } = useJobItem(activeId);
 
   if (isLoading) return <LoadingJobContent />;

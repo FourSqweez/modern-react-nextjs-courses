@@ -1,5 +1,6 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import React, { useContext, useEffect, useState } from 'react';
+import { ActiveIdContext } from '../contexts/ActiveIdContextProvider';
 import { BookmarksContext } from '../contexts/BookmarksContextProvider';
 import { BASE_API_URL } from './constants';
 import { JobItem, type JobItemExpanded } from './types';
@@ -182,6 +183,17 @@ export function useBookMarksContext() {
   if (!context) {
     throw new Error(
       'useBookmarksContext must be used within a BookmarksContextProvider'
+    );
+  }
+
+  return context;
+}
+
+export function useActiveIdContext() {
+  const context = useContext(ActiveIdContext);
+  if (!context) {
+    throw new Error(
+      'useActiveIdContextContext must be used within a ActiveIdContextContextProvider'
     );
   }
 
