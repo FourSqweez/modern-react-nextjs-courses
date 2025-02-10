@@ -2,6 +2,8 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import React, { useContext, useEffect, useState } from 'react';
 import { ActiveIdContext } from '../contexts/ActiveIdContextProvider';
 import { BookmarksContext } from '../contexts/BookmarksContextProvider';
+import { JobItemsContext } from '../contexts/JobItemsContextProvider';
+import { SearchTextContext } from '../contexts/SearchTextContextProvider';
 import { BASE_API_URL } from './constants';
 import { JobItem, type JobItemExpanded } from './types';
 import { handleError } from './utils';
@@ -194,6 +196,28 @@ export function useActiveIdContext() {
   if (!context) {
     throw new Error(
       'useActiveIdContextContext must be used within a ActiveIdContextContextProvider'
+    );
+  }
+
+  return context;
+}
+
+export function useSearchTextContext() {
+  const context = useContext(SearchTextContext);
+  if (!context) {
+    throw new Error(
+      'useSearchTextContext must be used within a SearchTextContextContextProvider'
+    );
+  }
+
+  return context;
+}
+
+export function useJobItemsContext() {
+  const context = useContext(JobItemsContext);
+  if (!context) {
+    throw new Error(
+      'useJobItemsContext must be used within a JobItemsContextContextProvider'
     );
   }
 
