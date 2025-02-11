@@ -1,3 +1,4 @@
+import SearchForm from '@/components/SearchForm'
 import Link from 'next/link'
 
 export default function Home() {
@@ -14,13 +15,7 @@ export default function Home() {
         around you
       </p>
 
-      <form className="w-full sm:w-[580px]">
-        <input
-          className="ring-accent/50 h-16 w-full rounded-lg bg-white/[7%] px-6 outline-none transition focus:bg-white/10 focus:ring-2"
-          placeholder="Search events in any city...."
-          spellCheck={false}
-        />
-      </form>
+      <SearchForm />
 
       <section className="mt-4 flex gap-x-4 text-sm text-white/50">
         <p>Popular:</p>
