@@ -1,3 +1,4 @@
+import Container from '@/components/Container'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import type { Metadata } from 'next'
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-gray-950 text-white`}>
-        <Header />
-        {children}
-        <Footer />
+        <Container>
+          <Header />
+          {children}
+          <Footer />
+        </Container>
       </body>
     </html>
   )
