@@ -1,5 +1,5 @@
 'use client'
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -26,7 +26,7 @@ export default function Header() {
           {links.map((route) => (
             <li
               key={route.path}
-              className={clsx(
+              className={cn(
                 'relative flex items-center transition hover:text-white',
                 {
                   'text-white': activePathname === route.path,
