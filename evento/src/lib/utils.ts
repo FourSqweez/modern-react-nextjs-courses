@@ -1,4 +1,5 @@
 import clsx, { ClassValue } from 'clsx'
+import { notFound } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
 import prisma from './db'
 
@@ -36,5 +37,8 @@ export async function getEvent(slug: string) {
     },
   })
 
+  if (!event) {
+    return notFound()
+  }
   return event
 }
