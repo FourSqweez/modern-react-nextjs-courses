@@ -1,6 +1,7 @@
 import EventsList from '@/components/EventsList'
 import H1 from '@/components/H1'
 import { EventoEvent } from '@/lib/types'
+import { sleep } from '@/lib/utils'
 
 type EventsPageProps = {
   params: {
@@ -11,6 +12,7 @@ type EventsPageProps = {
 export default async function EventsPage({ params }: EventsPageProps) {
   const city = params.city
 
+  await sleep(2000)
   const response = await fetch(
     `https://bytegrad.com/course-assets/projects/evento/api/events?city=${city}`,
   )
