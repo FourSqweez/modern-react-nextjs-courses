@@ -1,6 +1,6 @@
 import SkeletonCard from '@/components/SkeletonCard'
 
-export default function Loading() {
+export default function LoadingCard() {
   return (
     <div className="mx-auto flex max-w-[1100px] flex-wrap justify-center gap-20 px-[20px] py-24">
       <SkeletonCard />
