@@ -20,7 +20,7 @@ export default function EventCard({ event }: EventCardProps) {
   })
 
   const scaleProgress = useTransform(scrollYProgress, [0, 1], [0.8, 1])
-  const opacityProgress = useTransform(scrollYProgress, [0, 0.5], [-1, 1])
+  const opacityProgress = useTransform(scrollYProgress, [0, 0.5], [0.2, 1])
 
   return (
     <MotionLink
