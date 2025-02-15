@@ -14,18 +14,19 @@ export default async function Page() {
         <Stats />
       </div>
 
-      <div className=" grid grid-cols-3 grid-rows-[45px_1fr] gap-4 h-[600px]">
-        <div className="row-start-1 row-span-1 col-start-1 col-span-1">
-          <SearchForm />
+      <div className="flex flex-col md:flex-row gap-4 md:h-[600px]">
+        <div className="flex flex-col w-full md:w-1/3 gap-4">
+          <div className="h-[45px]">
+            <SearchForm />
+          </div>
+          <div className="md:flex-1 h-[300px]">
+            <ContentBlock>
+              <PetList />
+            </ContentBlock>
+          </div>
         </div>
 
-        <div className="row-start-2 row-span-full col-start-1 col-span-1">
-          <ContentBlock>
-            <PetList />
-          </ContentBlock>
-        </div>
-
-        <div className="row-start-1 row-span-full col-start-2 col-span-full">
+        <div className="h-[500px] md:flex-1 md:h-auto">
           <ContentBlock>
             <PetDetails />
           </ContentBlock>
