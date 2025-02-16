@@ -1,9 +1,13 @@
+import { Pet } from '@/lib/types'
 import Image from 'next/image'
 
-export default async function PetList({ pets }) {
+type PetListProps = {
+  pets: Pet[]
+}
+export default async function PetList({ pets }: PetListProps) {
   return (
     <ul className=" bg-white border-b border-black/[0.08]">
-      {pets.map((pet: unknown) => (
+      {pets.map((pet) => (
         <li key={pet.id}>
           <button className=" flex h-[70px] items-center w-full cursor-pointer px-5 text-base gap-3 hover:bg-[#EFF1F2] transition">
             <Image
