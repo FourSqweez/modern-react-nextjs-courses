@@ -1,9 +1,23 @@
 'use client'
-import { createContext, useState } from 'react'
+import { Pet } from '@/lib/types'
+import React, { createContext, useState } from 'react'
 
-export const PetContext = createContext(null)
+type PetContextProviderProps = {
+  children: React.ReactNode
+  data: Pet[]
+}
 
-export default function PetContextProvider({ children, data }) {
+type TPetContext = {
+  pets: Pet[]
+  selectedPetId: string | null
+}
+
+export const PetContext = createContext<TPetContext | null>(null)
+
+export default function PetContextProvider({
+  children,
+  data,
+}: PetContextProviderProps) {
   const [pets, setPets] = useState(data)
   const [selectedPetId, setSelectedPetId] = useState(null)
   return (
