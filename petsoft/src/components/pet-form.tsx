@@ -1,7 +1,6 @@
 'use client'
-import { IMG_BASE_URL } from '@/lib/constant'
+import { addPet } from '@/actions/actions'
 import { usePetContext } from '@/lib/hooks'
-import { FormEvent } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
@@ -15,29 +14,10 @@ export default function PetForm({
   actionType,
   onFormSubmission,
 }: PetFormProps) {
-  const { handleAddPet, selectedPet, handleEditPet } = usePetContext()
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const pet = {
-      name: formData.get('name') as string,
-      ownerName: formData.get('ownerName') as string,
-      imageUrl:
-        (formData.get('imageUrl') as string) ||
-        `${IMG_BASE_URL}/pet-placeholder.png`,
-      age: +(formData.get('age') as string),
-      notes: formData.get('notes') as string,
-    }
+  const { selectedPet } = usePetContext()
 
-    if (actionType === 'add') {
-      handleAddPet(pet)
-    } else {
-      handleEditPet(selectedPet!.id, pet)
-    }
-    onFormSubmission()
-  }
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col">
+    <form action={addPet} className="flex flex-col">
       <div className="space-y-3">
         <div className="space-y-1">
           <Label htmlFor="name">Name</Label>
