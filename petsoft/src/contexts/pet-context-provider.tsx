@@ -1,22 +1,22 @@
 'use client'
 import { addPet, checkoutPet, editPet } from '@/actions/actions'
-import { Pet } from '@/lib/types'
+import { OmitPetType, PetIdType, PetType } from '@/lib/types'
 import React, { createContext, useOptimistic, useState } from 'react'
 import { toast } from 'sonner'
 
 type PetContextProviderProps = {
   children: React.ReactNode
-  data: Pet[]
+  data: PetType[]
 }
 
 type TPetContext = {
-  pets: Pet[]
-  selectedPetId: string | null
-  handleChangeSelectedPetId: (id: string) => void
-  handleCheckoutPet: (id: string) => Promise<void>
-  handleAddPet: (newPet: Omit<Pet, 'id'>) => Promise<void>
-  handleEditPet: (petId: string, newPetData: Omit<Pet, 'id'>) => Promise<void>
-  selectedPet: Pet | undefined
+  pets: PetType[]
+  selectedPetId: PetIdType | null
+  handleChangeSelectedPetId: (id: PetIdType) => void
+  handleCheckoutPet: (id: PetIdType) => Promise<void>
+  handleAddPet: (newPet: OmitPetType) => Promise<void>
+  handleEditPet: (petId: PetIdType, newPetData: OmitPetType) => Promise<void>
+  selectedPet: PetType | undefined
   numberOfPets: number
 }
 
@@ -49,14 +49,14 @@ export default function PetContextProvider({
       }
     },
   )
-  const [selectedPetId, setSelectedPetId] = useState<string | null>(null)
+  const [selectedPetId, setSelectedPetId] = useState<PetIdType | null>(null)
 
   //derived state
   const selectedPet = optimisticPets.find((pet) => pet.id === selectedPetId)
   const numberOfPets = optimisticPets.length
 
   // event handlers / actions
-  const handleAddPet = async (newPet: Omit<Pet, 'id'>) => {
+  const handleAddPet = async (newPet: OmitPetType) => {
     setOptimisticPets({ action: 'add', payload: newPet })
     const error = await addPet(newPet)
     if (error) {
@@ -65,8 +65,10 @@ export default function PetContextProvider({
     }
   }
 
-  const handleEditPet = async (petId: string, newPetData: Omit<Pet, 'id'>) => {
+  const handleEditPet = async (petId: PetIdType, newPetData: OmitPetType) => {
     setOptimisticPets({ action: 'edit', payload: { id: petId, newPetData } })
+
+    console.log('Formdata :', newPetData)
 
     const error = await editPet(petId, newPetData)
     if (error) {
@@ -75,7 +77,7 @@ export default function PetContextProvider({
     }
   }
 
-  const handleCheckoutPet = async (petId: string) => {
+  const handleCheckoutPet = async (petId: PetIdType) => {
     setOptimisticPets({ action: 'delete', payload: petId })
     const error = await checkoutPet(petId)
     if (error) {
@@ -85,7 +87,7 @@ export default function PetContextProvider({
     setSelectedPetId(null)
   }
 
-  const handleChangeSelectedPetId = (id: string) => {
+  const handleChangeSelectedPetId = (id: PetIdType) => {
     setSelectedPetId(id)
   }
 

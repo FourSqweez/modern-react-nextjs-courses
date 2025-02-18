@@ -24,7 +24,7 @@ export default function PetForm({
           name: formData.get('name') as string,
           ownerName: formData.get('ownerName') as string,
           imageUrl:
-            (formData.get('imagUrl') as string) ||
+            (formData.get('imageUrl') as string) ||
             `${IMG_BASE_URL}/pet-placeholder.png`,
           age: Number(formData.get('age')),
           notes: formData.get('notes') as string,

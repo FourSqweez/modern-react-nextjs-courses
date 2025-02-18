@@ -1,8 +1,7 @@
-export type Pet = {
-  id: string
-  name: string
-  ownerName: string
-  imageUrl: string
-  age: number
-  notes: string
-}
+import { Pet } from '@prisma/client'
+
+export type PetType = Pet
+
+export type OmitPetType = Omit<Pet, 'id' | 'updatedAt' | 'createdAt'>
+
+export type PetIdType = Pet['id']
