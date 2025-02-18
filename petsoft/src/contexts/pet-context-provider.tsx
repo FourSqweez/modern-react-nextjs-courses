@@ -28,8 +28,25 @@ export default function PetContextProvider({
 }: PetContextProviderProps) {
   const [optimisticPets, setOptimisticPets] = useOptimistic(
     data,
-    (prevState, newPet) => {
-      return [...prevState, { ...newPet, id: Math.random().toString() }]
+    (prevState, { action, payload }) => {
+      switch (action) {
+        case 'add':
+          return [...prevState, { ...payload, id: Math.random().toString() }]
+
+        case 'edit':
+          return prevState.map((pet) => {
+            if (pet.id === payload.id) {
+              return { ...pet, ...payload.newPetData }
+            }
+            return pet
+          })
+
+        case 'delete':
+          return prevState.filter((pet) => pet.id !== payload)
+
+        default:
+          return prevState
+      }
     },
   )
   const [selectedPetId, setSelectedPetId] = useState<string | null>(null)
@@ -39,15 +56,8 @@ export default function PetContextProvider({
   const numberOfPets = optimisticPets.length
 
   // event handlers / actions
-  const handleCheckoutPet = async (petId: string) => {
-    // setOptimisticPets((prev) => prev.filter((pet) => pet.id !== id))
-    await checkoutPet(petId)
-
-    setSelectedPetId(null)
-  }
-
   const handleAddPet = async (newPet: Omit<Pet, 'id'>) => {
-    setOptimisticPets(newPet)
+    setOptimisticPets({ action: 'add', payload: newPet })
     const error = await addPet(newPet)
     if (error) {
       toast.warning(error.message)
@@ -56,12 +66,25 @@ export default function PetContextProvider({
   }
 
   const handleEditPet = async (petId: string, newPetData: Omit<Pet, 'id'>) => {
+    setOptimisticPets({ action: 'edit', payload: { id: petId, newPetData } })
+
     const error = await editPet(petId, newPetData)
     if (error) {
       toast.warning(error.message)
       return
     }
   }
+
+  const handleCheckoutPet = async (petId: string) => {
+    setOptimisticPets({ action: 'delete', payload: petId })
+    const error = await checkoutPet(petId)
+    if (error) {
+      toast.warning(error.message)
+      return
+    }
+    setSelectedPetId(null)
+  }
+
   const handleChangeSelectedPetId = (id: string) => {
     setSelectedPetId(id)
   }
