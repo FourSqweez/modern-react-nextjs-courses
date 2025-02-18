@@ -1,5 +1,5 @@
 'use client'
-import { addPet } from '@/actions/actions'
+import { addPet, editPet } from '@/actions/actions'
 import { usePetContext } from '@/lib/hooks'
 import { toast } from 'sonner'
 import PetFormBtn from './pet-form-btn'
@@ -20,10 +20,18 @@ export default function PetForm({
   return (
     <form
       action={async (formData) => {
-        const error = await addPet(formData)
-        if (error) {
-          toast.warning(error.message)
-          return
+        if (actionType === 'add') {
+          const error = await addPet(formData)
+          if (error) {
+            toast.warning(error.message)
+            return
+          }
+        } else if (actionType === 'edit') {
+          const error = await editPet(selectedPet?.id, formData)
+          if (error) {
+            toast.warning(error.message)
+            return
+          }
         }
         onFormSubmission()
       }}
