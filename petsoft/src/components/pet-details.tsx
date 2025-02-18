@@ -1,6 +1,5 @@
 'use client'
 
-import { checkoutPet } from '@/actions/actions'
 import { usePetContext } from '@/lib/hooks'
 import { Pet } from '@/lib/types'
 import Image from 'next/image'
@@ -61,11 +60,7 @@ function TopBar({ pet }: Props) {
         <PetButton
           actionType="checkout"
           disable={isPending}
-          onClick={async () => {
-            startTransition(async () => {
-              await checkoutPet(pet.id)
-            })
-          }}
+          onClick={async () => await handleCheckoutPet(pet.id)}
         >
           Checkout
         </PetButton>
