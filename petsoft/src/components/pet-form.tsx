@@ -26,13 +26,19 @@ export default function PetForm({
   const { selectedPet, handleAddPet, handleEditPet } = usePetContext()
   const {
     register,
+    trigger,
     formState: { errors },
   } = useForm<TPetForm>()
 
   return (
     <form
       action={async (formData) => {
+        const result = await trigger()
+
+        if (!result) return
+
         onFormSubmission()
+
         const petData = {
           name: formData.get('name') as string,
           ownerName: formData.get('ownerName') as string,
@@ -55,7 +61,13 @@ export default function PetForm({
           <Label htmlFor="name">Name</Label>
           <Input
             id="name"
-            {...register('name')}
+            {...register('name', {
+              required: 'Name is required',
+              minLength: {
+                value: 3,
+                message: 'Name must be at least 3 characters long',
+              },
+            })}
             defaultValue={actionType === 'edit' ? selectedPet?.name : ''}
           />
           {errors.name && (
@@ -66,7 +78,13 @@ export default function PetForm({
           <Label htmlFor="ownerName">Owner Name</Label>
           <Input
             id="ownerName"
-            {...register('ownerName')}
+            {...register('ownerName', {
+              required: 'Owner name is required',
+              maxLength: {
+                value: 5,
+                message: 'Owner name must be less than 20 characters long',
+              },
+            })}
             defaultValue={actionType === 'edit' ? selectedPet?.ownerName : ''}
           />
           {errors.ownerName && (
