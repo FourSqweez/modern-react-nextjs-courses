@@ -1,7 +1,9 @@
 'use client'
 import { IMG_BASE_URL } from '@/lib/constant'
 import { usePetContext } from '@/lib/hooks'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import PetFormBtn from './pet-form-btn'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
@@ -19,6 +21,22 @@ type TPetForm = {
   age: number
   notes: string
 }
+
+const petFormSchema = z.object({
+  name: z.string().trim().min(1, { message: 'Name is required' }).max(100),
+  ownerName: z
+    .string()
+    .trim()
+    .min(1, { message: 'Owner name is required' })
+    .max(100),
+  imageUrl: z.union([
+    z.literal(''),
+    z.string().trim().url({ message: 'Image url must be a valid url' }),
+  ]),
+  age: z.coerce.number().int().positive().max(99999),
+  notes: z.union([z.literal(''), z.string().trim().max(1000)]),
+})
+
 export default function PetForm({
   actionType,
   onFormSubmission,
@@ -28,7 +46,9 @@ export default function PetForm({
     register,
     trigger,
     formState: { errors },
-  } = useForm<TPetForm>()
+  } = useForm<TPetForm>({
+    resolver: zodResolver(petFormSchema),
+  })
 
   return (
     <form
@@ -61,13 +81,7 @@ export default function PetForm({
           <Label htmlFor="name">Name</Label>
           <Input
             id="name"
-            {...register('name', {
-              required: 'Name is required',
-              minLength: {
-                value: 3,
-                message: 'Name must be at least 3 characters long',
-              },
-            })}
+            {...register('name')}
             defaultValue={actionType === 'edit' ? selectedPet?.name : ''}
           />
           {errors.name && (
@@ -78,13 +92,7 @@ export default function PetForm({
           <Label htmlFor="ownerName">Owner Name</Label>
           <Input
             id="ownerName"
-            {...register('ownerName', {
-              required: 'Owner name is required',
-              maxLength: {
-                value: 5,
-                message: 'Owner name must be less than 20 characters long',
-              },
-            })}
+            {...register('ownerName')}
             defaultValue={actionType === 'edit' ? selectedPet?.ownerName : ''}
           />
           {errors.ownerName && (
