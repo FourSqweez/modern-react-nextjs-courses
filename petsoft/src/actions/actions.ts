@@ -1,12 +1,11 @@
 'use server'
 
 import { prisma } from '@/lib/prisma'
-import { OmitPetType, PetIdType } from '@/lib/types'
 import { sleep } from '@/lib/utils'
 import { petFormSchema } from '@/lib/validations'
 import { revalidatePath } from 'next/cache'
 
-export async function addPet(pet: OmitPetType) {
+export async function addPet(pet: unknown) {
   await sleep(1000)
 
   const validatedPet = petFormSchema.safeParse(pet)
@@ -30,7 +29,7 @@ export async function addPet(pet: OmitPetType) {
   revalidatePath('/app', 'layout')
 }
 
-export async function editPet(petId: PetIdType, newPetData: OmitPetType) {
+export async function editPet(petId: unknown, newPetData: unknown) {
   await sleep(1000)
   try {
     await prisma.pet.update({
@@ -47,7 +46,7 @@ export async function editPet(petId: PetIdType, newPetData: OmitPetType) {
   revalidatePath('/app', 'layout')
 }
 
-export async function checkoutPet(petId: PetIdType) {
+export async function checkoutPet(petId: unknown) {
   await sleep(1000)
 
   try {
