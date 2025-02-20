@@ -2,9 +2,11 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 
-type AuthFormProps = {}
+type AuthFormProps = {
+  type: 'logIn' | 'signUp'
+}
 
-export default function AuthForm({}: AuthFormProps) {
+export default function AuthForm({ type }: AuthFormProps) {
   return (
     <form>
       <div className="space-y-1">
@@ -16,7 +18,9 @@ export default function AuthForm({}: AuthFormProps) {
         <Input id="password" type="password" />
       </div>
 
-      <Button className="mt-4">Log In</Button>
+      <Button className="mt-4">
+        {type === 'logIn' ? 'Log In' : 'Sign Up'}
+      </Button>
     </form>
   )
 }
