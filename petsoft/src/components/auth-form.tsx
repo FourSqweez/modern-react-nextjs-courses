@@ -1,5 +1,5 @@
 import { login, signUp } from '@/actions/actions'
-import { Button } from './ui/button'
+import AuthFormBtn from './auth-form-btn'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 
@@ -24,10 +24,7 @@ export default function AuthForm({ type }: AuthFormProps) {
           maxLength={100}
         />
       </div>
-
-      <Button className="mt-4">
-        {type === 'logIn' ? 'Log In' : 'Sign Up'}
-      </Button>
+      <AuthFormBtn type={type} />
     </form>
   )
 }

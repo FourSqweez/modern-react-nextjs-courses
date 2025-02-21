@@ -13,6 +13,8 @@ import { redirect } from 'next/navigation'
 // --- user actions ---
 
 export async function login(formData: unknown) {
+  await sleep(1000)
+
   // check if formData is a FormData type
   if (!(formData instanceof FormData)) {
     return {
@@ -26,6 +28,8 @@ export async function login(formData: unknown) {
 }
 
 export async function signUp(formData: unknown) {
+  await sleep(1000)
+
   // check if formData is a FormData type
   if (!(formData instanceof FormData)) {
     return {
