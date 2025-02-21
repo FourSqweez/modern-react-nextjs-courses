@@ -7,12 +7,13 @@ import { sleep } from '@/lib/utils'
 import { authSchema, petFormSchema, petIdSchema } from '@/lib/validations'
 import { Prisma } from '@prisma/client'
 import bcrypt from 'bcryptjs'
+import { AuthError } from 'next-auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 // --- user actions ---
 
-export async function login(formData: unknown) {
+export async function login(prevState: unknown, formData: unknown) {
   await sleep(1000)
 
   // check if formData is a FormData type
@@ -22,8 +23,28 @@ export async function login(formData: unknown) {
     }
   }
 
-  await signIn('credentials', formData)
+  try {
+    await signIn('credentials', formData)
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin': {
+          return {
+            message: 'Invalid credentials.',
+          }
+        }
+        default: {
+          return {
+            message: 'Error. Could not sign in.',
+          }
+        }
+      }
+    }
 
+    return {
+      message: 'Error. Could not sign in.',
+    }
+  }
   redirect('/app/dashboard')
 }
 
