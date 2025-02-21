@@ -9,7 +9,6 @@ import { Prisma } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { AuthError } from 'next-auth'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 
 // --- user actions ---
 
@@ -41,11 +40,8 @@ export async function login(prevState: unknown, formData: unknown) {
       }
     }
 
-    return {
-      message: 'Error. Could not sign in.',
-    }
+    throw error // nextjs redirects throws error, so we need to rethrow it
   }
-  redirect('/app/dashboard')
 }
 
 export async function signUp(prevState: unknown, formData: unknown) {
