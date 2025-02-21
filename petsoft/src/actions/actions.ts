@@ -1,12 +1,12 @@
 'use server'
 
-import { auth, signIn, signOut } from '@/lib/auth'
+import { signIn, signOut } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { checkAuth } from '@/lib/server-utils'
 import { sleep } from '@/lib/utils'
 import { petFormSchema, petIdSchema } from '@/lib/validations'
 import bcrypt from 'bcryptjs'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 
 // --- user actions ---
 
@@ -36,11 +36,7 @@ export async function logOut() {
 // --- pet actions ---
 export async function addPet(pet: unknown) {
   await sleep(1000)
-  const session = await auth()
-
-  if (!session?.user) {
-    redirect('/login')
-  }
+  const session = await checkAuth()
 
   const validatedPet = petFormSchema.safeParse(pet)
 
@@ -74,11 +70,7 @@ export async function editPet(petId: unknown, newPetData: unknown) {
   await sleep(1000)
 
   // authentication check
-  const session = await auth()
-
-  if (!session?.user) {
-    redirect('/login')
-  }
+  const session = await checkAuth()
 
   // validation
   const validatedPetId = petIdSchema.safeParse(petId)
@@ -129,11 +121,7 @@ export async function checkoutPet(petId: unknown) {
   await sleep(1000)
 
   // authentication check
-  const session = await auth()
-
-  if (!session?.user) {
-    redirect('/login')
-  }
+  const session = await checkAuth()
 
   // validation
   const validatedPetId = petIdSchema.safeParse(petId)
