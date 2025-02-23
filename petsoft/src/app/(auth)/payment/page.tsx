@@ -13,7 +13,7 @@ export default function Page({
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const [isPending, startTransition] = useTransition()
-  const { update } = useSession()
+  const { data: session, update, status } = useSession()
   const router = useRouter()
   return (
     <main className="flex flex-col items-center space-y-10">
@@ -21,6 +21,7 @@ export default function Page({
 
       {searchParams.success && (
         <Button
+          disabled={status === 'loading' || session?.user.hasAccess}
           onClick={async () => {
             await update(true)
             router.push('/app/dashboard')
