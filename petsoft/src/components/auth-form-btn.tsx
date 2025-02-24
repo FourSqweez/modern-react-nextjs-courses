@@ -1,4 +1,5 @@
 'use client'
+
 import { useFormStatus } from 'react-dom'
 import { Button } from './ui/button'
 
@@ -8,8 +9,9 @@ type AuthFormBtnProps = {
 
 export default function AuthFormBtn({ type }: AuthFormBtnProps) {
   const { pending } = useFormStatus()
+
   return (
-    <Button disabled={pending} className="mt-4">
+    <Button disabled={pending}>
       {type === 'logIn' ? 'Log In' : 'Sign Up'}
     </Button>
   )

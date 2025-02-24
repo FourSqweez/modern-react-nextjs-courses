@@ -1,5 +1,6 @@
 'use client'
-import { login, signUp } from '@/actions/actions'
+
+import { logIn, signUp } from '@/actions/actions'
 import { useFormState } from 'react-dom'
 import AuthFormBtn from './auth-form-btn'
 import { Input } from './ui/input'
@@ -11,14 +12,16 @@ type AuthFormProps = {
 
 export default function AuthForm({ type }: AuthFormProps) {
   const [signUpError, dispatchSignUp] = useFormState(signUp, undefined)
-  const [loginError, dispatchLogin] = useFormState(login, undefined)
+  const [logInError, dispatchLogIn] = useFormState(logIn, undefined)
+
   return (
-    <form action={type === 'logIn' ? dispatchLogin : dispatchSignUp}>
+    <form action={type === 'logIn' ? dispatchLogIn : dispatchSignUp}>
       <div className="space-y-1">
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email" required maxLength={100} />
       </div>
-      <div className="mt-2 space-y-1">
+
+      <div className="mb-4 mt-2 space-y-1">
         <Label htmlFor="password">Password</Label>
         <Input
           id="password"
@@ -28,14 +31,14 @@ export default function AuthForm({ type }: AuthFormProps) {
           maxLength={100}
         />
       </div>
+
       <AuthFormBtn type={type} />
 
       {signUpError && (
         <p className="mt-2 text-sm text-red-500">{signUpError.message}</p>
       )}
-
-      {loginError && (
-        <p className="mt-2 text-sm text-red-500">{loginError.message}</p>
+      {logInError && (
+        <p className="mt-2 text-sm text-red-500">{logInError.message}</p>
       )}
     </form>
   )

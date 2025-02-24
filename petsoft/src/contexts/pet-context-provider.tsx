@@ -1,5 +1,5 @@
 'use client'
-import { addPet, checkoutPet, editPet } from '@/actions/actions'
+import { addPet, deletePet, editPet } from '@/actions/actions'
 import { OmitPetType, PetIdType, PetType } from '@/lib/types'
 import React, { createContext, useOptimistic, useState } from 'react'
 import { toast } from 'sonner'
@@ -79,7 +79,7 @@ export default function PetContextProvider({
 
   const handleCheckoutPet = async (petId: PetIdType) => {
     setOptimisticPets({ action: 'delete', payload: petId })
-    const error = await checkoutPet(petId)
+    const error = await deletePet(petId)
     if (error) {
       toast.warning(error.message)
       return

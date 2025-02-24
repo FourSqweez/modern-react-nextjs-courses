@@ -1,6 +1,7 @@
 'use server'
 
 import { signIn, signOut } from '@/lib/auth-no-edge'
+
 import { prisma } from '@/lib/prisma'
 import { checkAuth, getPetById } from '@/lib/server-utils'
 import { authSchema, petFormSchema, petIdSchema } from '@/lib/validations'
@@ -9,12 +10,12 @@ import bcrypt from 'bcryptjs'
 import { AuthError } from 'next-auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 // --- user actions ---
 
-export async function login(prevState: unknown, formData: unknown) {
-  // check if formData is a FormData type
+export async function logIn(prevState: unknown, formData: unknown) {
   if (!(formData instanceof FormData)) {
     return {
       message: 'Invalid form data.',
@@ -54,8 +55,8 @@ export async function signUp(prevState: unknown, formData: unknown) {
   // convert formData to a plain object
   const formDataEntries = Object.fromEntries(formData.entries())
 
+  // validation
   const validatedFormData = authSchema.safeParse(formDataEntries)
-
   if (!validatedFormData.success) {
     return {
       message: 'Invalid form data.',
@@ -93,14 +94,14 @@ export async function logOut() {
 }
 
 // --- pet actions ---
+
 export async function addPet(pet: unknown) {
   const session = await checkAuth()
 
   const validatedPet = petFormSchema.safeParse(pet)
-
   if (!validatedPet.success) {
     return {
-      message: 'invalid pet data.',
+      message: 'Invalid pet data.',
     }
   }
 
@@ -116,6 +117,7 @@ export async function addPet(pet: unknown) {
       },
     })
   } catch (error) {
+    console.log(error)
     return {
       message: 'Could not add pet.',
     }
@@ -134,19 +136,17 @@ export async function editPet(petId: unknown, newPetData: unknown) {
 
   if (!validatedPetId.success || !validatedPet.success) {
     return {
-      message: 'invalid pet data.',
+      message: 'Invalid pet data.',
     }
   }
 
   // authorization check
   const pet = await getPetById(validatedPetId.data)
-
   if (!pet) {
     return {
-      message: 'Pet not found',
+      message: 'Pet not found.',
     }
   }
-
   if (pet.userId !== session.user.id) {
     return {
       message: 'Not authorized.',
@@ -166,10 +166,11 @@ export async function editPet(petId: unknown, newPetData: unknown) {
       message: 'Could not edit pet.',
     }
   }
+
   revalidatePath('/app', 'layout')
 }
 
-export async function checkoutPet(petId: unknown) {
+export async function deletePet(petId: unknown) {
   // authentication check
   const session = await checkAuth()
 
@@ -177,16 +178,15 @@ export async function checkoutPet(petId: unknown) {
   const validatedPetId = petIdSchema.safeParse(petId)
   if (!validatedPetId.success) {
     return {
-      message: 'invalid pet data.',
+      message: 'Invalid pet data.',
     }
   }
 
   // authorization check (user own pet)
   const pet = await getPetById(validatedPetId.data)
-
   if (!pet) {
     return {
-      message: 'Pet not found',
+      message: 'Pet not found.',
     }
   }
   if (pet.userId !== session.user.id) {
@@ -207,12 +207,17 @@ export async function checkoutPet(petId: unknown) {
       message: 'Could not delete pet.',
     }
   }
+
   revalidatePath('/app', 'layout')
 }
 
 // --- payment actions ---
+
 export async function createCheckoutSession() {
+  // authentication check
   const session = await checkAuth()
+
+  // create checkout session
   const checkoutSession = await stripe.checkout.sessions.create({
     customer_email: session.user.email,
     line_items: [
@@ -225,6 +230,7 @@ export async function createCheckoutSession() {
     success_url: `${process.env.CANONICAL_URL}/payment?success=true`,
     cancel_url: `${process.env.CANONICAL_URL}/payment?cancelled=true`,
   })
+
   // redirect user
   redirect(checkoutSession.url)
 }
