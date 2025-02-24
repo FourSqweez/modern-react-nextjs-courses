@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs'
 import NextAuth, { NextAuthConfig } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import { getUserByEmail } from './server-utils'
-import { sleep } from './utils'
 import { authSchema } from './validations'
 
 const config = {
@@ -93,7 +92,6 @@ const config = {
       }
 
       if (trigger === 'update') {
-        await sleep(1000)
         // on every request
         const userFromDb = await getUserByEmail(token.email)
         if (userFromDb) {
